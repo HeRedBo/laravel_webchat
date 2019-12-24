@@ -25,7 +25,8 @@
 
        // 初始化客户端套接字并建立连接
        //var socket = new WebSocket("ws://127.0.0.1:5200");
-       var socket = new WebSocket("ws://lara-todo-s.test/ws");
+       //var socket = new WebSocket("ws://lara-blog-s.test/ws?age=1234");
+       var socket = new WebSocket("ws://lara-blog-s.test/ws/?EIO=3&transport=websocket");
        
        // 连接建立时触发
        socket.onopen = function (event) {

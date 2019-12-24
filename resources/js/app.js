@@ -1,37 +1,111 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue';
+import App from './layout/App';
+import router from './router';
+import store from './store';
+// 使用museui组件
+import MuseUI from 'muse-ui';
+import socket from './socket';
+import {queryString} from './utils/queryString';
 
-require('./bootstrap');
+import vuePicturePreview from './components/photo-viewer';
+Vue.use(vuePicturePreview);
 
-window.Vue = require('vue');
+Vue.use(MuseUI);
+Vue.config.productionTip = false;
 
-import {vueBaberrage} from 'vue-baberrage';
-Vue.use(vueBaberrage);
+const Notification = window.Notification;
 
+const popNotice = function(msgInfo) {
+  if (Notification.permission === "granted") {
+    let content = '';
+    if (msgInfo.img !== '') {
+      content = '[图片]';
+    } else {
+      content = msgInfo.msg;
+    }
+    const notification = new Notification(`【${msgInfo.roomid}】 提示`, {
+        body: content,
+        icon: msgInfo.src
+    });
+    notification.onclick = function() {
+      notification.close();
+    };
+  }
+};
 
+socket.on('connect', async () => {
+  console.log('websocket connected: ' + socket.connected);
+  const roomId = queryString(window.location.href, 'roomId');
+  const userId = store.state.userInfo.userid;
+  const token = store.state.userInfo.token;
+  console.log(store.state.userInfo);
+  if (userId) {
+    socket.emit('login', {
+      name: userId,
+      token: token
+    });
+  }
+  if (roomId) {
+    const obj = {
+      name: userId,
+      src: store.state.userInfo.src,
+      roomid: roomId
+    };
+    socket.emit('room', obj);
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+    if (store.state.isDiscount) {
+      await store.commit('setRoomDetailInfos');
+      await store.commit('setCurrent', 1);
+      await store.commit('setDiscount', false);
+      await store.commit('setTotal', 0);
+      await store.dispatch('getAllMessHistory', {
+        current: 1,
+        roomid: roomId
+      });
+    }
+  }
+});
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+socket.on('disconnect', () => {
+  console.log('disconnect');
+  store.commit('setDiscount', true);
+});
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('danmu-component', require('./components/DanmuComponent.vue').default);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+socket.on('message', function (obj) {
+  store.commit('addRoomDetailInfos', [obj]);
+  console.log(Notification.permission);
+  if (Notification.permission === "granted") {
+    popNotice(obj);
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission(function (permission) {
+      popNotice(obj);
+    });
+  }
+});
 
-const app = new Vue({
-    el: '#app',
+document.addEventListener('touchstart', (e) => {
+  if (e.target.className.indexOf('emoji') > -1 || e.target.parentNode.className.indexOf('emoji') > -1) {
+    store.commit('setEmoji', true);
+  } else {
+    store.commit('setEmoji', false);
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.className.indexOf('emoji') > -1 || e.target.parentNode.className.indexOf('emoji') > -1) {
+    store.commit('setEmoji', true);
+  } else {
+    store.commit('setEmoji', false);
+  }
+});
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  template: '<App/>',
+  components: {App}
 });

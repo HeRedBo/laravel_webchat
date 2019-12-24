@@ -8,8 +8,9 @@
 
 namespace App\Services\WebSocket;
 
-
 use App\Events\MessageReceived;
+use App\Services\WebSocket\SocketIO\Packet;
+use App\Services\WebSocket\SocketIO\SocketIOParser;
 use App\User;
 use Hhxsv5\LaravelS\Swoole\Task\Event;
 use Hhxsv5\LaravelS\Swoole\WebSocketHandlerInterface;
@@ -18,48 +19,88 @@ use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 
+
 class WebSocketHandler implements WebSocketHandlerInterface
 {
+    /**
+     * @var Websocket
+     */
+    protected $websocket;
+
+    /**
+     * @var Parser
+     */
+    protected $parser;
+
     public function __construct()
     {
-        // 构造函数即使为空，也不能省略
+        $this->websocket = app('swoole.websocket');
+        $this->parser = app('swoole.parser');
     }
+
 
     public function onOpen(Server $server, Request $request)
     {
-        Log::info('WebSocket 连接建立');
+        if(!request()->input('sid')) {
+            // 初始化 连接信息适配 socket.io-client
+            $payload = json_encode([
+                'sid' => base64_encode(uniqid()),
+                'upgrades' => [],
+                'pingInterval' => config('laravels.swoole.heartbeat_idle_time') * 1000,
+                'pingTimeout' => config('laravels.swoole.heartbeat_check_interval') * 1000,
+            ]);
+
+            $initPayload = Packet::OPEN . $payload;
+            $connectPayload = Packet::MESSAGE . Packet::CONNECT;
+            $server->push($request->fd, $initPayload);
+            $server->push($request->fd, $connectPayload);
+        }
+        Log::info('WebSocket 连接建立:' . $request->fd);
+        $payload = [
+            'sender'    => $request->fd,
+            'fds'       => [$request->fd],
+            'broadcast' => false,
+            'assigned'  => false,
+            'event'     => 'message',
+            'message'   => '欢迎访问聊天室',
+        ];
+        $pusher = Pusher::make($payload, $server);
+        $pusher->push($this->parser->encode($pusher->getEvent(), $pusher->getMessage()));
     }
 
     public function onMessage(Server $server, Frame $frame)
     {
         // TODO: Implement onMessage() method.
         // $frame->fd 是客户端 id，$frame->data 是客户端发送的数据
-        Log::info("从 {$frame->fd} 接收到数据：$frame->data");
-        $message = json_decode($frame->data);
-        // 基于 Token的用户认证校验
-        if(empty($message->token) || !($user = User::where('api_token', $message->token)->first()))
-        {
-            Log::warning("用户" . $message->name . "已经离线，不能发送消息");
-            $server->push($frame->fd, "离线用户不能发送消息");  // 告知用户离线状态不能发送消息
-        }
-        else
-        {
-            // 触发消息接收事件
-            $event = new MessageReceived($message, $user->id);
-            Event::fire($event);
-            unset($message->token);
-            foreach ($server->connections as $fd)
-            {
-                if($server->isEstablished($fd))
-                {
-                    // 如果连接不可用则忽略
-                    continue;
-                }
-                # 服务端通过 push 方法向所有客户端广播消息
-                $server->push($fd, $frame->data);
+        Log::info("从 {$frame->fd} 接收到数据：{$frame->data}");
 
-            }
+        if($this->parser->execute($server,$frame))
+        {
+            // 跳过心跳连接处理
+            return ;
         }
+
+        $payload = $this->parser->decode($frame);
+        ['event' => $event, 'data' => $data] = $payload;
+        $this->websocket->reset(true)->setSender($frame->fd);
+
+        if ($this->websocket->eventExists($event)) {
+            $this->websocket->call($event, $data);
+        } else {
+            // 兜底处理，一般不会执行到这里
+            return;
+        }
+//        $payload = [
+//            'sender' => $frame->fd,
+//            'fds'    => [$frame->fd],
+//            'broadcast' => false,
+//            'assigned'  => false,
+//            'event'     => $event,
+//            'message'   => $data,
+//        ];
+
+//        $pusher = Pusher::make($payload, $server);
+//        $pusher->push($this->parser->encode($pusher->getEvent(), $pusher->getMessage()));
     }
 
     // 连接关闭时触发
@@ -67,8 +108,9 @@ class WebSocketHandler implements WebSocketHandlerInterface
     {
         // TODO: Implement onClose() method.
         Log::info('WebSocket 连接关闭:' . $fd);
+        $this->websocket->setSender($fd);
+        if ($this->websocket->eventExists('disconnect')) {
+            $this->websocket->call('disconnect', '连接关闭');
+        }
     }
-
-
-
 }

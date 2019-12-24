@@ -34,4 +34,10 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    // 图灵机器人api 配置
+    'turingapi' => [
+        'url' => 'http://www.tuling123.com/openapi/api',
+        'key' => env('ROBOT_KEY')
+    ]
+
 ];
