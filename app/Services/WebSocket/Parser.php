@@ -64,8 +64,11 @@ abstract class Parser
     /**
      * Input message on websocket connected
      * Define and return name and payload dara here
-     * @param $frame
-     * @return mixed
+     *
+     * @param \Swoole\Websocket\Frame $frame
+     *
+     * @return array
+     *
      * @author Red-Bo
      * @date 2019-12-13 14:34
      */

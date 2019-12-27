@@ -134,8 +134,8 @@ export default {
           value: ""
         });
         this.$store.commit("setUnread", {
-          room1: 0,
-          room2: 0
+          0: 0,
+          1: 0
         });
         this.$router.push("/");
         this.$store.commit("setTab", false);

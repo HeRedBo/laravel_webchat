@@ -45,6 +45,7 @@ Trait Authenticatable
         if (is_null($userId = $this->getUserId())) {
             return null;
         }
+
         return $this->leave(static::USER_PREFIX . $userId);
     }
     /**
@@ -52,15 +53,18 @@ Trait Authenticatable
      *
      * @param $users
      *
-     * @return \SwooleTW\Http\Websocket\Authenticatable
+     * @return Authenticatable
      */
     public function toUser($users)
     {
         $users = is_object($users) ? func_get_args() : $users;
+
         $userIds = array_map(function (AuthenticatableContract $user) {
             $this->checkUser($user);
+
             return $user->getAuthIdentifier();
         }, $users);
+
         return $this->toUserId($userIds);
     }
     /**
@@ -68,7 +72,7 @@ Trait Authenticatable
      *
      * @param $userIds
      *
-     * @return \SwooleTW\Http\Websocket\Authenticatable
+     * @return Authenticatable
      */
     public function toUserId($userIds)
     {

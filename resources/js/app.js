@@ -4,15 +4,18 @@ import Vue from 'vue';
 import App from './layout/App';
 import router from './router';
 import store from './store';
-// 使用museui组件
-import MuseUI from 'muse-ui';
 import socket from './socket';
 import {queryString} from './utils/queryString';
+
+// 使用museui组件
+import MuseUI from 'muse-ui';
+Vue.use(MuseUI);
+
 
 import vuePicturePreview from './components/photo-viewer';
 Vue.use(vuePicturePreview);
 
-Vue.use(MuseUI);
+
 Vue.config.productionTip = false;
 
 const Notification = window.Notification;
@@ -51,7 +54,8 @@ socket.on('connect', async () => {
     const obj = {
       name: userId,
       src: store.state.userInfo.src,
-      roomid: roomId
+      roomid: roomId,
+      api_token: token
     };
     socket.emit('room', obj);
 
@@ -62,7 +66,8 @@ socket.on('connect', async () => {
       await store.commit('setTotal', 0);
       await store.dispatch('getAllMessHistory', {
         current: 1,
-        roomid: roomId
+        roomid: roomId,
+        api_token: token
       });
     }
   }

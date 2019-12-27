@@ -10,6 +10,7 @@ namespace App\Services\WebSocket\SocketIO;
 
 
 use App\Services\WebSocket\Parser;
+use App\Services\WebSocket\SocketIO\Strategies\HeartbeatStrategy;
 
 class SocketIOParser extends Parser
 {
@@ -18,7 +19,7 @@ class SocketIOParser extends Parser
      * @var array
      */
     protected $strategies = [
-
+        HeartbeatStrategy::class
     ];
 
     /**

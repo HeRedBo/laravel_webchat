@@ -63,7 +63,8 @@
             :img="obj.img"
             :mytime="obj.time"
             :container="container"
-            ></Message>
+            >
+          </Message>
           <div class="clear"></div>
         </div>
       </div>
@@ -182,7 +183,7 @@
         name: this.userid,
         src: this.src,
         roomid: this.roomid,
-         api_token: this.auth_token
+        api_token: this.auth_token
       };
       socket.emit('room', obj);
       socket.on('room', function (obj) {
@@ -259,7 +260,8 @@
       goback () {
         const obj = {
           name: this.userid,
-          roomid: this.roomid
+          roomid: this.roomid,
+          api_token: this.auth_token,
         };
         socket.emit('roomout', obj);
         this.$router.goBack();
