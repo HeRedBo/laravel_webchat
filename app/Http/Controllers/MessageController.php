@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +33,11 @@ class MessageController extends Controller
         $skip = ($current - 1) * 20;  // 从第多少条消息开始
 
         // 分页查询消息
-        $messageData = Message::where('room_id', $roomId)->skip($skip)->take($limit)->orderBy('created_at', 'desc')->get();
+        $messageData = Message::where('room_id', $roomId)->skip($skip)->take($limit)->orderBy('created_at', 'asc')->get();
+        if($messageData)
+        {
+            $messageData = MessageResource::collection($messageData);
+        }
         // 返回响应信息
         return response()->json([
             'data' => [

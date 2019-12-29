@@ -56,7 +56,7 @@
           <Message
             v-for="obj in getInfos"
             :key="obj._id"
-            :is-self="obj.username === userid"
+            :is-self="obj.userid === userid"
             :name="obj.username"
             :head="obj.src"
             :msg="obj.msg"
@@ -290,7 +290,8 @@
               img: fr.result,
               msg: '',
               roomid: that.roomid,
-              time: new Date()
+              time: new Date(),
+              api_token: this.auth_token,
             };
             socket.emit('message', obj);
           };
@@ -323,7 +324,8 @@
             img: '',
             msg,
             roomid: this.roomid,
-            time: new Date()
+            time: new Date(),
+            api_token: this.auth_token,
           };
           // 传递消息信息
           socket.emit('message', obj);

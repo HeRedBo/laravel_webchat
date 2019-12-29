@@ -56,16 +56,19 @@ class WebSocketHandler implements WebSocketHandlerInterface
             $server->push($request->fd, $connectPayload);
         }
         Log::info('WebSocket 连接建立:' . $request->fd);
-        $payload = [
-            'sender'    => $request->fd,
-            'fds'       => [$request->fd],
-            'broadcast' => false,
-            'assigned'  => false,
-            'event'     => 'message',
-            'message'   => '欢迎访问聊天室',
-        ];
-        $pusher = Pusher::make($payload, $server);
-        $pusher->push($this->parser->encode($pusher->getEvent(), $pusher->getMessage()));
+        if ($this->websocket->eventExists('connect')) {
+            $this->websocket->call('connect', $request);
+        }
+//        $payload = [
+//            'sender'    => $request->fd,
+//            'fds'       => [$request->fd],
+//            'broadcast' => false,
+//            'assigned'  => false,
+//            'event'     => 'message',
+//            'message'   => '欢迎访问聊天室',
+//        ];
+//        $pusher = Pusher::make($payload, $server);
+//        $pusher->push($this->parser->encode($pusher->getEvent(), $pusher->getMessage()));
     }
 
     public function onMessage(Server $server, Frame $frame)

@@ -19,10 +19,10 @@ class CreateMessagesTable extends Migration
         }
         Schema::create($this->table, function (Blueprint $table) {
             $table->bigIncrements('id')->comment("主键ID");
-            $table->string('msg',255)->comment('文本消息');
-            $table->string('img',255)->comment('图片消息');
-            $table->bigInteger('user_id');
-            $table->smallInteger('room_id');
+            $table->string('msg',255)->default('')->comment('文本消息');
+            $table->string('img',255)->default('')->comment('图片消息');
+            $table->bigInteger('user_id')->default(0)->comment("用户ID");
+            $table->smallInteger('room_id')->default(0)->comment("房间号");;
             $table->timestamp('created_at')->nullable()->comment('创建时间');
         });
     }
