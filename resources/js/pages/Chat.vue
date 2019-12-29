@@ -277,6 +277,7 @@
         if (file1) {
           const formdata = new window.FormData();
           formdata.append('file', file1);
+          formdata.append('api_token', this.auth_token);
           formdata.append('username', this.userid);
           formdata.append('src', this.src);
           formdata.append('roomid', that.roomid);
@@ -291,7 +292,7 @@
               msg: '',
               roomid: that.roomid,
               time: new Date(),
-              api_token: this.auth_token,
+              api_token: that.auth_token,
             };
             socket.emit('message', obj);
           };

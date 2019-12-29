@@ -34,7 +34,7 @@ WebsocketProxy::on('login', function (WebSocket $websocket, $data) {
         $websocket->loginUsing($user);
         // 读取未读消息
         $room_counts = \App\Models\Count::where('user_id', $user->id)
-            ->whereIn('room_id',\App\Models\Count::$ROOMLIST)
+            ->whereIn('room_id',array_keys(\App\Models\Count::$ROOMLIST))
             ->select(['room_id','count'])
             ->get()
             ->toArray();
@@ -183,7 +183,7 @@ WebsocketProxy::on('message', function (WebSocket $websocket, $data)
             if ($result) {
                 $result->count += 1;
                 $result->save();
-                $rooms[$room] = $result->count;
+                $rooms[$roomId] = $result->count;
             } else {
                 // 如果某个用户未读消息数记录不存在，则初始化它
                 $count = new Count();
@@ -191,7 +191,7 @@ WebsocketProxy::on('message', function (WebSocket $websocket, $data)
                 $count->room_id = $roomId;
                 $count->count = 1;
                 $count->save();
-                $rooms[$room] = 1;
+                $rooms[$roomId] = 1;
             }
             $websocket->to($socketId)->emit('count', $rooms);
         }

@@ -17,8 +17,7 @@ use Illuminate\Http\Request;
 Route::post('/register', 'AuthController@register');
 Route::post('/login', 'AuthController@login');
 Route::any('/logout', 'AuthController@logout');
-
-
+# Route::get('/message/count', 'MessageController@count');
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -36,4 +35,5 @@ Route::middleware('auth:api')->group(function () {
         return response()->json(['data' => $response->getBody()]);
     });
     Route::get('/history/message', 'MessageController@history');
+    Route::post('/file/uploadimg', 'FileController@uploadImage');
 });

@@ -33,9 +33,15 @@ class MessageController extends Controller
         $skip = ($current - 1) * 20;  // 从第多少条消息开始
 
         // 分页查询消息
-        $messageData = Message::where('room_id', $roomId)->skip($skip)->take($limit)->orderBy('created_at', 'asc')->get();
+        $messageData = Message::where('room_id', $roomId)
+                    ->skip($skip)
+                    ->take($limit)
+                    ->orderBy('created_at', 'DESC')->get();
+
         if($messageData)
         {
+            ## 数据反转 便于前端渲染
+            $messageData = $messageData->reverse();
             $messageData = MessageResource::collection($messageData);
         }
         // 返回响应信息
@@ -48,5 +54,18 @@ class MessageController extends Controller
                 'current' => $current
             ]
         ]);
+    }
+
+    public function count(Request $request)
+    {
+        // 读取未读消息
+        $room_counts = \App\Models\Count::where('user_id', 6)
+            ->whereIn('room_id',array_keys(\App\Models\Count::$ROOMLIST))
+            ->select(['room_id','count'])
+            ->get()
+            ->toArray();
+        $rooms = [];
+        $room_counts = array_column($room_counts,'count','room_id');
+        dd($room_counts);
     }
 }
