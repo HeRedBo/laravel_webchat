@@ -23,6 +23,8 @@ use App\User;
 WebsocketProxy::on('connect', function (WebSocket $websocket, Request $request) {
     // 发送欢迎信息
     $websocket->setSender($request->fd);
+    // 建立连接时绑定认证用户信息
+    $websocket->loginUsing(auth('api')->user());
 });
 
 
@@ -106,6 +108,7 @@ WebsocketProxy::on('roomout', function (WebSocket $websocket, $data)
 
 WebsocketProxy::on('disconnect', function (WebSocket $websocket, $data) {
     roomout($websocket, $data);
+    $websocket->logout();
 });
 
 function roomout(WebSocket $websocket, $data) {
@@ -137,7 +140,8 @@ function roomout(WebSocket $websocket, $data) {
 WebsocketProxy::on('message', function (WebSocket $websocket, $data)
 {
 
-    if (!empty($data['api_token']) && ($user = User::where('api_token', $data['api_token'])->first())) {
+    if ($userId = $websocket->getUserId()) {
+        $user = User::find($userId);
         // 获取消息内容
         $msg = $data['msg'];
         $img = $data['img'];

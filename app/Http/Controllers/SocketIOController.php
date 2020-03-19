@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class SocketIOController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     //
     protected $transports = ['polling', 'websocket'];
 
@@ -32,7 +36,6 @@ class SocketIOController extends Controller
             'pingTimeout' => config('laravels.swoole.heartbeat_check_interval') * 1000
         ]);
         $length = strlen($payload) + 1;
-        return '97:0' . $payload . '2:40';
         return response($length.':0' . $payload . '2:40');
     }
 

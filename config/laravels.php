@@ -146,8 +146,8 @@ return [
          * @see https://www.swoole.co.uk/docs/modules/swoole-server/configuration  English
          */
 
-        // 每隔 6s 检测一次所有连接，如果某个连接在 60s 内都没有发送任何数据，则关闭该连接
-        'heartbeat_idle_time'      => 60,
-        'heartbeat_check_interval' => 25,
+        // 每隔 10s 检测一次所有连接，如果某个连接在 10s 内都没有发送任何数据，则关闭该连接
+        'heartbeat_idle_time'      => 10,
+        'heartbeat_check_interval' => 10,
     ],
 ];
