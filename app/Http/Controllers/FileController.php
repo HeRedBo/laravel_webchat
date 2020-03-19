@@ -49,4 +49,41 @@ class FileController extends Controller
             ]);
         }
     }
+
+
+    public function avatar(Request  $request)
+    {
+        if (!$request->hasFile('file') || !$request->file('file')->isValid()) {
+            return response()->json([
+                'errno' => 500,
+                'msg'   => '无效的参数（头像图片为空或者无效）'
+            ]);
+        }
+
+        $image = $request->file('file');
+        $time = time();
+        $filename = md5($time . mt_rand(0, 10000)) . '.' . $image->extension();
+        $path = $image->storeAs('images/avatars/' . date('Y/m/d', $time), $filename, ['disk' => 'public']);
+        if ($path) {
+            // 保存用户头像信息到数据库
+            $user = auth('api')->user();
+            ## TODO 删除旧图
+
+            $user->avatar = Storage::disk('public')->url($path);
+            $user->save();
+            return response()->json([
+                'errno' => 0,
+                'data' => [
+                    'url' => $user->avatar
+                ],
+                'msg'   => '保存成功'
+            ]);
+        } else {
+            return response()->json([
+                'errno' => 500,
+                'msg'   => '文件上传失败，请重试'
+            ]);
+        }
+
+    }
 }

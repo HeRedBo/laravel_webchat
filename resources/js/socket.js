@@ -1,9 +1,12 @@
 import io from 'socket.io-client';
-// console.log(process);
-// const socket = io.connect('http://lara-blog-s.test' + ':' + process.env.LARAVELS_LISTEN_PORT + '/ws/')
+// import uuid from 'uuid';
+// import { Base64 } from 'js-base64';
+
 const socket = io('http://lara-blog-s.test',{ 
     path:'/ws',
-    transports: ['websocket']
+    transports: ['websocket'],
+    reconnection: true,
+    rememberUpgrade:true
 });
 
 export default socket;

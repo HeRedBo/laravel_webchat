@@ -43,7 +43,7 @@ class HeartbeatStrategy
 
         if($isPing)
         {
-            $server->push($frame->id, $payload);
+            $server->push($frame->fd, $payload);
         }
 
         return true;

@@ -45,7 +45,7 @@ class WebSocketHandler implements WebSocketHandlerInterface
             // 初始化 连接信息适配 socket.io-client
             $payload = json_encode([
                 'sid' => base64_encode(uniqid()),
-                'upgrades' => [],
+                'upgrades' => ['websocket'],
                 'pingInterval' => config('laravels.swoole.heartbeat_idle_time') * 1000,
                 'pingTimeout' => config('laravels.swoole.heartbeat_check_interval') * 1000,
             ]);
@@ -59,16 +59,7 @@ class WebSocketHandler implements WebSocketHandlerInterface
         if ($this->websocket->eventExists('connect')) {
             $this->websocket->call('connect', $request);
         }
-//        $payload = [
-//            'sender'    => $request->fd,
-//            'fds'       => [$request->fd],
-//            'broadcast' => false,
-//            'assigned'  => false,
-//            'event'     => 'message',
-//            'message'   => '欢迎访问聊天室',
-//        ];
-//        $pusher = Pusher::make($payload, $server);
-//        $pusher->push($this->parser->encode($pusher->getEvent(), $pusher->getMessage()));
+
     }
 
     public function onMessage(Server $server, Frame $frame)

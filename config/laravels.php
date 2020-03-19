@@ -58,12 +58,12 @@ return [
     ],
     'sockets'                  => [],
     'processes'                => [
-        //[
-        //    'class'    => \App\Processes\TestProcess::class,
-        //    'redirect' => false, // Whether redirect stdin/stdout, true or false
-        //    'pipe'     => 0 // The type of pipeline, 0: no pipeline 1: SOCK_STREAM 2: SOCK_DGRAM
-        //    'enable'   => true // Whether to enable, default true
-        //],
+//        [
+//            'class'    => \App\Processes\TestProcess::class,
+//            'redirect' => false, //是否将输入输出重定向到 stdin/stdout, true or false Whether redirect stdin/stdout, true or false
+//            'pipe'     => 0 ,// 管道类型, 0: 不使用管道 1: SOCK_STREAM 2: SOCK_DGRAM The type of pipeline, 0: no pipeline 1: SOCK_STREAM 2: SOCK_DGRAM
+//           #  'enable'   => true // Whether to enable, default true
+//        ],
     ],
     'timer'                    => [
         'enable'        => true,
@@ -132,7 +132,7 @@ return [
         'reload_async'       => true,
         'max_wait_time'      => 60,
         'enable_reuse_port'  => true,
-        'enable_coroutine'   => false,
+        'enable_coroutine'   => true,
         'http_compression'   => false,
 
         // Slow log
@@ -148,6 +148,6 @@ return [
 
         // 每隔 60s 检测一次所有连接，如果某个连接在 600s 内都没有发送任何数据，则关闭该连接
         'heartbeat_idle_time'      => 600,
-        'heartbeat_check_interval' => 60,
+        'heartbeat_check_interval' => 5,
     ],
 ];

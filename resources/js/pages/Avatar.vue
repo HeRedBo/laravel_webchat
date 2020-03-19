@@ -58,6 +58,7 @@
           const formdata = new window.FormData();
           formdata.append('file', files);
           formdata.append('username', getItem('userid'));
+          formdata.append('api_token', this.auth_token);
           const res = await this.$store.dispatch('uploadAvatar', formdata);
           loading.hide();
           if (res.errno === 0) {
@@ -127,7 +128,8 @@
     computed: {
       ...mapState({
         userid: state => state.userInfo.userid,
-        src: state => state.userInfo.src
+        src: state => state.userInfo.src,
+        auth_token: state => state.userInfo.token
       })
     }
   };
