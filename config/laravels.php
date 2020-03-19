@@ -94,7 +94,7 @@ return [
     'cleaners'                 => [
         // If you use the session/authentication/passport in your project
         // Hhxsv5\LaravelS\Illuminate\Cleaners\SessionCleaner::class,
-        // Hhxsv5\LaravelS\Illuminate\Cleaners\AuthCleaner::class,
+        Hhxsv5\LaravelS\Illuminate\Cleaners\AuthCleaner::class,
 
         // If you use the package "tymon/jwt-auth" in your project
         // Hhxsv5\LaravelS\Illuminate\Cleaners\SessionCleaner::class,
@@ -146,8 +146,8 @@ return [
          * @see https://www.swoole.co.uk/docs/modules/swoole-server/configuration  English
          */
 
-        // 每隔 60s 检测一次所有连接，如果某个连接在 600s 内都没有发送任何数据，则关闭该连接
-        'heartbeat_idle_time'      => 600,
-        'heartbeat_check_interval' => 5,
+        // 每隔 6s 检测一次所有连接，如果某个连接在 60s 内都没有发送任何数据，则关闭该连接
+        'heartbeat_idle_time'      => 60,
+        'heartbeat_check_interval' => 25,
     ],
 ];

@@ -7451,7 +7451,6 @@ Socket.prototype.onPacket = function (packet) {
 
     // Socket is live - any packet counts
     this.emit('heartbeat');
-    console.log(packet.type);
     switch (packet.type) {
       case 'open':
         this.onHandshake(JSON.parse(packet.data));
@@ -53177,12 +53176,7 @@ __webpack_require__.r(__webpack_exports__);
  // import uuid from 'uuid';
 // import { Base64 } from 'js-base64';
 
-var socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default()('http://lara-blog-s.test', {
-  path: '/ws',
-  transports: ['websocket'],
-  reconnection: true,
-  rememberUpgrade: true
-});
+var socket = socket_io_client__WEBPACK_IMPORTED_MODULE_0___default()('http://lara-blog-s.test');
 /* harmony default export */ __webpack_exports__["default"] = (socket);
 
 /***/ }),

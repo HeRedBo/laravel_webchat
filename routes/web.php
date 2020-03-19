@@ -20,6 +20,11 @@ Route::get('/', function () {
 //});
 
 
+## socket.io 路由
+Route::get('/socket.io', 'SocketIOController@upgrade');
+Route::post('/socket.io', 'SocketIOController@ok');
+
+
 //用户登录注册
 Auth::routes();
 
@@ -43,6 +48,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
