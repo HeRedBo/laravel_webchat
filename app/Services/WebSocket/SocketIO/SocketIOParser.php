@@ -32,7 +32,7 @@ class SocketIOParser extends Parser
      */
     public function encode(string $event, $data)
     {
-        $packet = Packet::MESSAGE. Packet::EVENT;
+        $packet = Packet::MESSAGE. Packet::EVENT; # 42
         $shouldEncode = is_array($data) || is_object($data);
         $data = $shouldEncode ? json_encode($data) : $data;
         $format = $shouldEncode ?  '["%s",%s]' : '["%s","%s"]';
@@ -51,7 +51,6 @@ class SocketIOParser extends Parser
     public function decode($frame)
     {
         $payload = Packet::getPayload($frame->data);
-
         return [
             'event' => $payload['event'] ?? null,
             'data' => $payload['data'] ?? null,

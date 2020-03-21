@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by PhpStorm. 用于数据处理后发送给客户端的业务逻辑处理，包括数据解析和统一封装、是否广播等。
  * User: hehongbo
  * Date: 2019-12-13
  * Time: 16:02
@@ -244,11 +244,9 @@ class Pusher
     public function push($payload):void
     {
         // attach sender if not broadcast
-        if(! $this->broadcast && $this->sender && $this->hasDescriptor($this->sender))
-        {
+        if (! $this->broadcast && $this->sender && ! $this->hasDescriptor($this->sender)) {
             $this->addDescriptor($this->sender);
         }
-
         // check if to broadcast to other clients
         if($this->shouldBroadcast())
         {
