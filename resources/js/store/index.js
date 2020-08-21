@@ -31,23 +31,23 @@ const store = new Vuex.Store({
     {
       username: ROBOT_NAME,
       src: ROBOT_URL,
-      msg: '如果微信群过期了,添加作者微信(添加时记得备注:项目交流)'
+      msg: '你好，我是图灵机器人'
     },
-    {
-      username: ROBOT_NAME,
-      src: ROBOT_URL,
-      img: "https://s3.qiufengh.com/webchat/webcaht-my.jpeg"
-    },
-    {
-      username: ROBOT_NAME,
-      src: ROBOT_URL,
-      msg: '期待你的加入'
-    },
-    {
-      username: ROBOT_NAME,
-      src: ROBOT_URL,
-      img: "https://s3.qiufengh.com/webchat/webchat-group.jpeg"
-    },
+    // {
+    //   username: ROBOT_NAME,
+    //   src: ROBOT_URL,
+    //   img: "https://s3.qiufengh.com/webchat/webcaht-my.jpeg"
+    // },
+    // {
+    //   username: ROBOT_NAME,
+    //   src: ROBOT_URL,
+    //   msg: '期待你的加入'
+    // },
+    // {
+    //   username: ROBOT_NAME,
+    //   src: ROBOT_URL,
+    //   img: "https://s3.qiufengh.com/webchat/webchat-group.jpeg"
+    // },
     {
       username: ROBOT_NAME,
       src: ROBOT_URL,

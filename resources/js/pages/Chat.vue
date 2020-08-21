@@ -13,7 +13,7 @@
       <div class="title">
         <mu-appbar title="Title">
         <!--   <mu-icon-button icon="chevron_left" slot="left" @click="goback"/> -->
-          
+
           <mu-button icon slot="left" @click="goback">
             <mu-icon value="chevron_left"></mu-icon>
           </mu-button>
@@ -101,12 +101,12 @@
               </div>
             </div>
           </div>
-          <div class="fun-li" @click="handleTips">
-            <i class="icon iconfont icon-zanshang"></i>
-          </div>
-          <div class="fun-li" @click="handleGithub">
-            <i class="icon iconfont icon-wenti"></i>
-          </div>
+<!--          <div class="fun-li" @click="handleTips">-->
+<!--            <i class="icon iconfont icon-zanshang"></i>-->
+<!--          </div>-->
+<!--          <div class="fun-li" @click="handleGithub">-->
+<!--            <i class="icon iconfont icon-wenti"></i>-->
+<!--          </div>-->
         </div>
         <div class="chat">
           <div class="input" @keyup.enter="submess">

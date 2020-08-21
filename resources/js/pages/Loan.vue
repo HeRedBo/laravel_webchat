@@ -3,7 +3,7 @@
     <div>
       <mu-list>
         <mu-sub-header>最近聊天记录</mu-sub-header>
-        
+
         <mu-list-item avatar button :ripple="false" @click="chatwindow('1')">
               <mu-list-item-action  class="avatar">
                   <span class="tip" v-if="unRead1!==0">{{unRead1 > 99 ? '99+' : unRead1}}</span>
@@ -57,7 +57,7 @@
                       <img :src="robot">
                   </mu-avatar>
               </mu-list-item-action>
-              <mu-list-item-title>客服大白(微信群，作者联系方式，找我)</mu-list-item-title>
+              <mu-list-item-title>客服大白(图片机器人要收费，功能待日后完善)</mu-list-item-title>
               <mu-list-item-action>
                   <mu-icon value="chat_bubble"></mu-icon>
               </mu-list-item-action>

@@ -14,7 +14,7 @@
     <div class="content">
       <mu-list>
 
-<!-- 
+<!--
         <mu-list-item title="修改头像" @click="changeAvatar">
           <mu-icon slot="left" value="send"/>
         </mu-list-item> -->
@@ -27,19 +27,19 @@
         </mu-list-item>
 
 
-        <mu-list-item button @click="handleTips">
-          <mu-list-item-action>
-            <mu-icon slot="left" value="inbox"/>
-          </mu-list-item-action>
-          <mu-list-item-title>赞助一下</mu-list-item-title>
-        </mu-list-item>
+<!--        <mu-list-item button @click="handleTips">-->
+<!--          <mu-list-item-action>-->
+<!--            <mu-icon slot="left" value="inbox"/>-->
+<!--          </mu-list-item-action>-->
+<!--          <mu-list-item-title>赞助一下</mu-list-item-title>-->
+<!--        </mu-list-item>-->
 
-        <mu-list-item button @click="handleGithub">
-          <mu-list-item-action>
-            <mu-icon slot="left" value="grade"/>
-          </mu-list-item-action>
-          <mu-list-item-title>Github地址</mu-list-item-title>
-        </mu-list-item>
+<!--        <mu-list-item button @click="handleGithub">-->
+<!--          <mu-list-item-action>-->
+<!--            <mu-icon slot="left" value="grade"/>-->
+<!--          </mu-list-item-action>-->
+<!--          <mu-list-item-title>Github地址</mu-list-item-title>-->
+<!--        </mu-list-item>-->
 
 
         <mu-list-item button @click="rmLocalData">
