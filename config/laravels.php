@@ -72,7 +72,7 @@ return [
             //\Hhxsv5\LaravelS\Illuminate\LaravelScheduleJob::class,
             // Two ways to configure parameters:
             // [\App\Jobs\XxxCronJob::class, [1000, true]], // Pass in parameters when registering
-            \App\Jobs\Timer\TestCronJob::class, // Override the corresponding method to return the configuration
+            //\App\Jobs\Timer\TestCronJob::class, // Override the corresponding method to return the configuration
         ],
         'max_wait_time' => 5,
     ],
