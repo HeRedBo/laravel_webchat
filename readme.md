@@ -1,4 +1,4 @@
-###  laravel + swoole vue 聊天室项目
+###  laravel + swoole web聊天室项目
 
 项目使用 laravel + Vue + swoole 构建的的聊天模块。主要涉及如下技术
 
