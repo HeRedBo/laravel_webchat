@@ -14,7 +14,7 @@
  
  
 ### 项目演示地址：
-    http://webchat.yirenkeji.com
+- [项目地址](http://webchat.yirenkeji.com) ： http://webchat.yirenkeji.com
  
  用户账号可自行创建，用户名请使用邮箱地址
  
