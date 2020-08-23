@@ -57,7 +57,7 @@ npm install // 建议使用 cnpm install 安装 npm 包
 # 包安装成功后构建前端样式文件 
 npm run dev 
 ```
-- 6. 配置nginx 站点信息 
+- 6.配置nginx 站点信息 
 ```
 upstream laravels {
     # Connect IP:Port
