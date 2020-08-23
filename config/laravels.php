@@ -73,6 +73,7 @@ return [
             // Two ways to configure parameters:
             // [\App\Jobs\XxxCronJob::class, [1000, true]], // Pass in parameters when registering
             //\App\Jobs\Timer\TestCronJob::class, // Override the corresponding method to return the configuration
+            \App\Jobs\Timer\DeleteMessageJob::class, // 批量删除聊天是信息避免消息积累
         ],
         'max_wait_time' => 5,
     ],
