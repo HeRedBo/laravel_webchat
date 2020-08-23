@@ -57,6 +57,48 @@ npm install // 建议使用 cnpm install 安装 npm 包
 # 包安装成功后构建前端样式文件 
 npm run dev 
 ```
+- 6. 配置nginx 站点信息 
+```
+upstream laravels {
+    # Connect IP:Port
+    server 127.0.0.1:5200 weight=5 max_fails=3 fail_timeout=30s;
+    keepalive 16;
+}
+server {
+    listen 80;
+    ## 根据自己的实际情况配置 本地记得配置 hosts 文件
+    server_name webchat.yirenkeji.com;
+    access_log  /usr/local/var/log/nginx/webchat.yirenkeji.com.access.log;
+    error_log /usr/local/var/log/nginx/webchat.yirenkeji.com.error.log;
+    root /var/www/laravel/webchat/public;
+    index index.php index.html index.htm;
+    # Nginx 处理静态资源，LaravelS 处理动态资源
+    location / {
+        try_files $uri @laravels;
+    }
+    
+    location @laravels {
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Real-PORT $remote_port;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header Scheme $scheme;
+        proxy_set_header Server-Protocol $server_protocol;
+        proxy_set_header Server-Name $server_name;
+        proxy_set_header Server-Addr $server_addr;
+        proxy_set_header Server-Port $server_port;
+        proxy_pass http://laravels;
+    }
+}
+```
+- 7.启动项目
+```
+# 在项目根目录下如下命令 即可启动项目
+php bin/laravels start 
+```
+接下来就可以见证奇迹的时刻，打开浏览器，输入自己配置好的域名，即可进入项目开启聊天之旅了
 
 
  
