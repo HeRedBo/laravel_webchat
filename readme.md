@@ -51,11 +51,10 @@ php artisan migrate
 php artisan storage:link 
 ```
 - 5.前端样式构建
-```$xslt
-
+```
 # 安装前端需要的扩展包
- npm install // 建议使用 cnpm install 安装 npm 包 
- # 包安装成功后构建前端样式文件 
+npm install // 建议使用 cnpm install 安装 npm 包 
+# 包安装成功后构建前端样式文件 
 npm run dev 
 ```
 
